@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bhoomi | Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="left">
+            <a class="nav-link" href="{{ url_for('dashboard') }}">Bhoomi</a>
+            <a class="nav-link" href="{{ url_for('marketplace') }}">Marketplace</a>
+            <a class="nav-link" href="{{ url_for('mycrop') }}">My Crops</a>
+            <a class="nav-link" href="{{ url_for('weather') }}">Weather</a>
+            <a class="nav-link" href="{{ url_for('qgismap') }}">Detailed Map</a>            <a class="nav-link" href="{{ url_for('subscription') }}">Subscription</a>
+        </div>
+        <div class="right">
+            <span>👤 {{ name }}</span>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Welcome, {{ name }}</h2>
+        <p style="text-align:center;">Last Soil Sample Collected: <strong>2025-04-15</strong></p>
+
+        <h3>Soil Parameters</h3>
+        <div class="grid">
+            {% for key, value in data.items() %}
+            <div class="card" title="{{ tooltips[key] }}">
+                <h4>{{ key }}</h4>
+                <p>{{ value }}</p>
+                <div class="tooltip">{{ tooltips[key] }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3 style="margin-top: 60px;">Crop & Fertilizer Recommendation</h3>
+        <div class="grid">
+            <div class="card">
+                <h4>Recommended Crop</h4>
+                <p>🌾 Wheat</p>
+            </div>
+            <div class="card">
+                <h4>Fertilizer Plan</h4>
+                <p>Urea: 75kg<br> Potash: 40kg<br> DAP: 60kg</p>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 60px;">Current Subscription</h3>
+        <div class="grid">
+            <div class="card">
+                <h4>Plan</h4>
+                <p>Basic – ₹299/month</p>
+                <div class="tooltip">Includes crop analysis, fertilizer tips, map access</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Bhoomi Technologies | Empowering Smart Agriculture
+    </div>
+</body>
+</html>

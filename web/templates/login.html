@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bhoomi Login</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/bhoomi_logo.png') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: url('{{ url_for('static', filename='images/bg.jpg') }}');
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .blur-overlay {
+            backdrop-filter: blur(6px);
+            background-color: rgba(255, 255, 255, 0.25);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            width: 380px;
+            text-align: center;
+        }
+
+        .blur-overlay img {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        .blur-overlay h2 {
+            margin-bottom: 30px;
+            color: #2e7d32;
+        }
+
+        .blur-overlay input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+
+        .blur-overlay button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .blur-overlay button:hover {
+            background-color: #27642b;
+        }
+
+        .blur-overlay p {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .blur-overlay a {
+            color: #2e7d32;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="blur-overlay">
+        <img src="{{ url_for('static', filename='images/bhoomi_logo.png') }}" alt="Bhoomi Logo">
+        <h2>Welcome to Bhoomi</h2>
+        <form method="POST">
+            <input name="email" type="email" placeholder="Email" required><br>
+            <input name="password" type="password" placeholder="Password" required><br>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don’t have an account? <a href="/register">Register here</a></p>
+    </div>
+</body>
+</html>
