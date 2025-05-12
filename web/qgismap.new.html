@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Farm Map | Bhoomi</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    #map {
+      height: 300px;
+      width: 100%;
+    }
+
+    .graph-preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin: 10px auto 20px; /* Reduced top margin */
+      padding: 15px; /* Slightly tighter padding */
+      max-width: 700px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .graph-preview img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .graph-preview h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 12px 0 5px; /* Reduced vertical margin */
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🗺️ Farm Map with Soil Parameters</h2>
+  <div id="map"></div>
+
+  <!-- Image Preview Section -->
+  <div class="graph-preview">
+    <h3>📊 Preview of Soil Data Graphs (Coming Soon)</h3>
+    <img src="/static/images/graph_preview.jpg" alt="Graph Preview">
+  </div>
+
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script>
+    const map = L.map('map').setView([18.52, 73.85], 16);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    fetch('/static/geojson/farm_boundary.geojson')
+      .then(res => res.json())
+      .then(data => {
+        L.geoJSON(data, {
+          style: {
+            color: '#228B22',
+            weight: 2,
+            fillOpacity: 0.1
+          }
+        }).addTo(map);
+      });
+
+    fetch('/static/data/soil_data.csv')
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.trim().split('\n');
+        const headers = rows[0].split(',');
+        const dataRows = rows.slice(1);
+        const parameterIndex = headers.indexOf("nitrogen");
+
+        const heatPoints = dataRows.map(row => {
+          const cols = row.split(',');
+          const lat = parseFloat(cols[0]);
+          const lon = parseFloat(cols[1]);
+          const value = parseFloat(cols[parameterIndex]) / 100;
+          return [lat, lon, value];
+        });
+
+        L.heatLayer(heatPoints, {
+          radius: 25,
+          blur: 20,
+          maxZoom: 17,
+          gradient: {
+            0.0: 'blue',
+            0.3: 'green',
+            0.6: 'yellow',
+            1.0: 'red'
+          }
+        }).addTo(map);
+      });
+  </script>
+
+</body>
+</html>
